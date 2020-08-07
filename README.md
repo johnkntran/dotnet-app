@@ -15,3 +15,16 @@ docker container rm aspnetapp
 docker images
 docker rmi <image_name_1> <image_name_2>
 ```
+
+## Getting Started
+```bash
+# Build and start container in "watch" mode for development
+docker build -t aspnetapp . && docker run --name aspnetapp -p 5000:5000 aspnetapp
+
+# Stop and delete container/image
+docker container stop aspnetapp && docker container rm aspnetapp && docker rmi aspnetapp
+
+# Build DLL artifact for production
+docker build -t aspnetapp .
+docker run -p 5000:80 --name aspnetapp aspnetapp
+```

@@ -1,16 +1,17 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1
+
 WORKDIR /app
+COPY . /app
 
-# Copy csproj and restore as distinct layers
-COPY *.csproj ./
-RUN dotnet restore
+ENV ASPNETCORE_URLS=http://+:5000
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true
 
-# Copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o out
+RUN ["dotnet", "restore"]
+RUN ["dotnet", "build"]
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS deployment
-WORKDIR /app
-COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "aspnetapp.dll"]
+EXPOSE 5000
+
+ENTRYPOINT ["dotnet", "watch", "run", "--no-restore", "--urls", "http://0.0.0.0:5000", "--verbosity", "minimal"]
+
+# See: https://stackoverflow.com/a/51256147

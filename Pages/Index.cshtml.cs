@@ -13,6 +13,7 @@ namespace aspnetapp.Pages
         private readonly ILogger<IndexModel> _logger;
 
         public string Msg {get; set; }
+        public string AnotherMsg {get; set; }
 
         public IndexModel(ILogger<IndexModel> logger)
         {
@@ -22,6 +23,7 @@ namespace aspnetapp.Pages
         public void OnGet()
         {
             Msg = "Hello, World! The time is " + DateTime.Now.ToLongTimeString();
+            AnotherMsg = "Something else entirely";
         }
     }
 }

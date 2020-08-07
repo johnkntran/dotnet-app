@@ -4,16 +4,21 @@ networks:
     localdev:
         name: localdev
 
+volumes:
+    sqlserverdata:
+
 services:
     app:
         build: ./
         restart: always
         ports:
-            - '7000:80'
+            - '5000:5000'
         depends_on:
             - db
         networks:
             - localdev
+        volumes:
+            - .:/app
 
     db:
         image: microsoft/mssql-server-linux:2017-latest
@@ -26,3 +31,5 @@ services:
             - '1400:1433'
         networks:
             - localdev
+        volumes:
+            - sqlserverdata:/var/opt/mssql/data
